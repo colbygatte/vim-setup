@@ -7,6 +7,8 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 "---------------------------------
 "Plugin 'swekaj/php-foldexpr.vim'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'keith/swift.vim'
 Plugin 'posva/vim-vue'
 Plugin 'vim-scripts/indentpython.vim'
 Plugin 'VundleVim/Vundle.vim'
@@ -29,6 +31,7 @@ Plugin 'chrisbra/csv.vim'
 "---------------------------------
 call vundle#end()   
 
+so ~/.vim/bundle/taglist_46/plugin/taglist.vim
 "}}}
 
 " General Settings ------------------{{{
@@ -61,6 +64,11 @@ ab teh the
 " Scroll offset. Unused because we are using VCenterCursor.
 set scrolloff=100
 
+noremap <left> <nop>
+noremap <right> <nop>
+noremap <up> <nop>
+noremap <down> <nop>
+
 "}}}
 
 " Visuals -----------------------{{{
@@ -88,7 +96,7 @@ set incsearch
 "}}}
 
 " Mappings-------------------------------{{{
-
+" General mappings-----------------------{{{
 " Delete current buffer 
 nnoremap qqq :bd<cr>
 
@@ -99,7 +107,8 @@ nnoremap quit :wq<cr>
 nnoremap rite :w<cr>
 
 " Insert mode write
-inoremap irite <esc>:w<cr>
+" Using 'x' because it is a less common character, and this is in normal mode
+inoremap xrite <esc>:w<cr>
 
 " Show Relative Numbers
 nnoremap <Leader>reln :set relativenumber<cr>
@@ -112,6 +121,8 @@ nnoremap <Leader>ib ^i
 " Repurpose "zz" command
 nnoremap zz za
 
+" }}}
+
 " Move lines around--------{{{
 " Insert blank lines
 nnoremap <silent>ak :set paste<CR>m`O<Esc>``:set nopaste<CR>
@@ -122,6 +133,7 @@ nnoremap qk :m -2<cr>
 nnoremap qj :m +1<cr>
 
 "}}}
+"
 " Other-------------------{{{
 " Save a session. Open a saved session using vim -S
 nnoremap <Leader>ss :mksession<cr>:echo "Session saved! Open session with vim -S"<cr>
@@ -166,6 +178,7 @@ noremap <Leader>vr :vertical res<space>
 noremap <Leader><Leader><Leader> :so %<cr>
 
 "}}}
+"
 " PHP Mappings---------------{{{
 
 " Move to end of parameter declaration of function, insert mode 
@@ -173,31 +186,6 @@ noremap <Leader><Leader><Leader> :so %<cr>
 " Add To FUnction
 nnoremap <Leader>atfu ?function\s\+[a-zA-Z0-9_]\+([^)]*)?e<cr>:nohlsearch<cr>i
 
-" Code Folding---------------{{{
-
-" Not currently in use.
-function! PhpDocFolds()
-    let thisline = getline(v:lnum)
-
-    if match(thisline, '^\s*/\*\*') >= 0
-        return ">1"
-    elseif match(thisline, '^\s\+\*') >= 0
-        return "="
-    else
-        return "0"
-    endif
-endfunction
-
-function! PhpDocFoldText()
-    " If there is no description, just show dots.
-    if match(getline(v:foldstart + 1), '^\s*\*\s*@') >= 0
-        return '/** ... */'
-    endif
-
-    return '/*' . substitute(getline(v:foldstart + 1), '^\s*', '', '') . ' */'
-endfunction
-
-"}}} }}} }}}
 
 " Plugins Settings --------------{{{
 
@@ -261,6 +249,9 @@ function! RunPhpUnitTest()
     " current position & search backwords for function declaration.
 endfunction
 
+"}}}
+
+"}}}
 "}}}
 
 " PHP namespace---------------------------{{{
@@ -390,8 +381,8 @@ augroup end
 augroup filetype_php
     autocmd!
     autocmd FileType php setlocal foldmethod=expr
-    autocmd FileType php setlocal foldexpr=PhpDocFolds()
-    autocmd FileType php setlocal foldtext=PhpDocFoldText()
+    autocmd FileType php setlocal foldexpr=PhpFolds()
+    autocmd FileType php setlocal foldtext=PhpFoldText()
 augroup end
 
 augroup filetype_vim
@@ -415,7 +406,7 @@ nnoremap <Localleader>ope :tabnew html/updates/data/price_export.csv<cr>
 
 "}}}
 
-" Run the current file-----------{{{
+" Command line----------------{{{ 
 
 " RUn PYthon
 " Saves & then runs the current file
