@@ -133,7 +133,7 @@ nnoremap qk :m -2<cr>
 nnoremap qj :m +1<cr>
 
 "}}}
-"
+
 " Other-------------------{{{
 " Save a session. Open a saved session using vim -S
 nnoremap <Leader>ss :mksession<cr>:echo "Session saved! Open session with vim -S"<cr>
@@ -178,7 +178,7 @@ noremap <Leader>vr :vertical res<space>
 noremap <Leader><Leader><Leader> :so %<cr>
 
 "}}}
-"
+
 " PHP Mappings---------------{{{
 
 " Move to end of parameter declaration of function, insert mode 
