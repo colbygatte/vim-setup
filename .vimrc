@@ -69,6 +69,9 @@ noremap <right> <nop>
 noremap <up> <nop>
 noremap <down> <nop>
 
+" Syntastic
+let g:syntastic_quiet_messages = { "type": "style" }
+
 "}}}
 
 " Visuals -----------------------{{{
